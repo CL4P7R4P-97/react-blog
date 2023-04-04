@@ -18,7 +18,7 @@ function App() {
        <Routes>
         
         <Route exact path='/' Component={Home} /> 
-        <Route exact path='/:postID' Component={PostDetails} /> 
+        <Route exact path='/post/:postID' Component={PostDetails} /> 
         <Route exact path='/createPost' Component={CreatePost} />
        </Routes >
     </div>

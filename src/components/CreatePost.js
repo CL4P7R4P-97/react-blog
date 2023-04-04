@@ -1,21 +1,22 @@
- import {useEffect, useState} from "react";
- import {db}   from "../firebaseConfig";
- import { doc,addDoc,collection, setDoc } from "firebase/firestore"; 
+import { firestore } from "../firebaseConfig";
+import userFormInput from "../hooks/hooks";
 
  function CreatePost(){
 
-  const [title, setTitle] = useState("");
-  const [subTitle, setSub] = useState("");
-  const [content, setContent] = useState("");
+  const title = userFormInput("");
+  const subTitle = userFormInput("");
+  const content = userFormInput("");
+
 
 
 
   const addPost = async ()=>{
 
-    const docRef = await addDoc(collection(db, "posts"), {
-        title: title,
-        state: subTitle,
-        content: content
+    firestore.collection('posts').add({
+        title: title.value,
+        content: content.value,
+        subTitle: subTitle.value,
+        createdAt: new Date(),
       });
   }
 
@@ -23,7 +24,7 @@
 
         e.preventDefault();
 
-        if(title.trim() == "" || subTitle.trim() == "" || content.trim()== ""){
+        if(title.value.trim() == "" || subTitle.value.trim() == "" || content.value.trim()== ""){
             alert("Nothing should be empty");
             return;
         }
@@ -44,15 +45,15 @@
         <form onSubmit={handleSubmit}>
             <div className="form-field">
                 <label>Title</label>
-                <input onChange={(e)=>setTitle(e.target.value)} /> 
+                <input  {... title} /> 
             </div>
             <div className="form-field">
                 <label>Sub Title</label>
-                <input onChange={(e)=>setSub(e.target.value)} /> 
+                <input  {...subTitle}  /> 
             </div>
             <div className="form-field">
                 <label>Content</label>
-                <textarea onChange={(e)=>setContent(e.target.value)}></textarea>
+                <textarea  {...content}></textarea>
             </div>
             <button className="create-post-btn">Create Post</button>
         </form>
